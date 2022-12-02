@@ -6,13 +6,13 @@ fn main() {
 }
 
 #[derive(Default)]
-struct Container{
+struct Container {
     elves: Vec<usize>,
     current_elf: usize,
-    max : usize,
+    max: usize,
 }
 
-impl InputReader for Container{
+impl InputReader for Container {
     fn add_line(&mut self, line: &str) {
         if line == "" {
             if self.current_elf > self.max {
@@ -26,18 +26,17 @@ impl InputReader for Container{
     }
 
     fn star1(self) -> String {
-        format!("{}",  self.max)
+        format!("{}", self.max)
     }
 
     fn star2(mut self) -> String {
-        self.elves.sort_by(|a,b| b.cmp(a));
+        self.elves.sort_by(|a, b| b.cmp(a));
 
-        let mut  sum = 0;
-        for i in 0..3{
+        let mut sum = 0;
+        for i in 0..3 {
             sum += self.elves[i];
         }
 
-        format!("{}",  sum)
+        format!("{}", sum)
     }
 }
-

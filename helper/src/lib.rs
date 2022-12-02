@@ -21,8 +21,8 @@ pub trait InputReader {
 }
 
 #[macro_export]
-macro_rules! aoc1{
-    ($c:ty, $f:expr, $r: expr) =>{
+macro_rules! aoc1 {
+    ($c:ty, $f:expr, $r: expr) => {
         let mut container = <$c>::default();
         container.read(&*format!("./{}/test.txt", $f)).unwrap();
         assert_eq!(container.star1(), $r.to_string());
@@ -31,11 +31,11 @@ macro_rules! aoc1{
         container.read(&*format!("./{}/input.txt", $f)).unwrap();
 
         println!("Star 1 : {}", container.star1());
-    }
+    };
 }
 #[macro_export]
-macro_rules! aoc2{
-    ($c:ty, $f:expr, $r: expr, $s: expr, $t: expr) =>{
+macro_rules! aoc2 {
+    ($c:ty, $f:expr, $r: expr, $s: expr, $t: expr) => {
         let mut container = <$c>::default();
         container.read(&*format!("./{}/test.txt", $f)).unwrap();
         assert_eq!(container.star1(), $r.to_string());
@@ -52,6 +52,5 @@ macro_rules! aoc2{
         container.read(&*format!("./{}/input.txt", $f)).unwrap();
 
         println!("Star 2 : {}", container.star2());
-
-    }
+    };
 }
