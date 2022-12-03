@@ -23,6 +23,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "day3"
+version = "0.1.0"
+dependencies = [
+ "helper",
+]
+
+[[package]]
 name = "easy_reader"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
