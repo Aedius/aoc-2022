@@ -6,18 +6,17 @@ fn main() {
 }
 
 #[derive(Default)]
-struct Container{
-    sum : usize,
-    sum2 : usize,
-    elf1 : Option<Vec<char>>,
-    elf2 : Option<Vec<char>>,
+struct Container {
+    sum: usize,
+    sum2: usize,
+    elf1: Option<Vec<char>>,
+    elf2: Option<Vec<char>>,
 }
 
-impl InputReader for Container{
+impl InputReader for Container {
     fn add_line(&mut self, line: &str) {
         self.pack_of1(line);
         self.pack_of2(line);
-
     }
 
     fn star1(self) -> String {
@@ -30,29 +29,28 @@ impl InputReader for Container{
 }
 
 impl Container {
-
-    fn pack_of2(&mut self, line: &str){
-        if self.elf1.is_none(){
+    fn pack_of2(&mut self, line: &str) {
+        if self.elf1.is_none() {
             let mut chars = line.chars();
             let mut pack = Vec::new();
-            while let Some(c) = chars.next(){
+            while let Some(c) = chars.next() {
                 pack.push(c);
             }
             self.elf1 = Some(pack)
-        }else if self.elf2.is_none(){
+        } else if self.elf2.is_none() {
             let mut chars = line.chars();
             let mut pack = Vec::new();
-            while let Some(c) = chars.next(){
-                if self.elf1.as_ref().unwrap().contains(&c) && !pack.contains(&c){
+            while let Some(c) = chars.next() {
+                if self.elf1.as_ref().unwrap().contains(&c) && !pack.contains(&c) {
                     pack.push(c);
                 }
             }
             self.elf2 = Some(pack)
-        }else{
+        } else {
             let mut chars = line.chars();
             let mut pack = Vec::new();
-            while let Some(c) = chars.next(){
-                if self.elf2.as_ref().unwrap().contains(&c) && !pack.contains(&c){
+            while let Some(c) = chars.next() {
+                if self.elf2.as_ref().unwrap().contains(&c) && !pack.contains(&c) {
                     pack.push(c);
                 }
             }
@@ -89,10 +87,10 @@ impl Container {
     }
 }
 
-fn to_point(c : char) -> u32{
-    if c.is_lowercase(){
+fn to_point(c: char) -> u32 {
+    if c.is_lowercase() {
         c as u32 - 96
-    }else{
+    } else {
         c as u32 - 38
     }
 }
@@ -115,5 +113,4 @@ mod tests {
         assert_eq!(to_point('t'), 20);
         assert_eq!(to_point('s'), 19);
     }
-
 }

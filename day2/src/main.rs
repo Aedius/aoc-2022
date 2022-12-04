@@ -54,22 +54,22 @@ fn to_choice(i: &str) -> Choice {
         }
     }
 }
-fn to_choice2(elf: Choice,i: &str) -> Choice {
+fn to_choice2(elf: Choice, i: &str) -> Choice {
     match i {
         "X" => match elf {
-            Rock => {Scissor}
-            Paper => {Rock}
-            Scissor => {Paper}
+            Rock => Scissor,
+            Paper => Rock,
+            Scissor => Paper,
         },
         "Y" => match elf {
-            Rock => {Rock}
-            Paper => {Paper}
-            Scissor => {Scissor}
+            Rock => Rock,
+            Paper => Paper,
+            Scissor => Scissor,
         },
         "Z" => match elf {
-            Rock => {Paper}
-            Paper => {Scissor}
-            Scissor => {Rock}
+            Rock => Paper,
+            Paper => Scissor,
+            Scissor => Rock,
         },
         _ => {
             panic!("bad letter {}", i)
@@ -77,30 +77,30 @@ fn to_choice2(elf: Choice,i: &str) -> Choice {
     }
 }
 
-fn win(a: Choice, b: Choice) -> Option<bool>{
+fn win(a: Choice, b: Choice) -> Option<bool> {
     if a == b {
-        return None
+        return None;
     }
 
-    if a == Rock && b == Scissor{
-        return Some(true)
+    if a == Rock && b == Scissor {
+        return Some(true);
     }
-    if a == Scissor && b == Paper{
-        return Some(true)
+    if a == Scissor && b == Paper {
+        return Some(true);
     }
-    if a == Paper && b == Rock{
-        return Some(true)
+    if a == Paper && b == Rock {
+        return Some(true);
     }
 
     Some(false)
 }
 
-fn calculate_score( elf:Choice, response:Choice) -> usize{
+fn calculate_score(elf: Choice, response: Choice) -> usize {
     let mut score = 0;
 
     match response {
         Rock => {
-            score+= 1;
+            score += 1;
         }
         Paper => {
             score += 2;
@@ -110,18 +110,17 @@ fn calculate_score( elf:Choice, response:Choice) -> usize{
         }
     }
 
-    match win(response, elf){
+    match win(response, elf) {
         Some(false) => {
-            score+=0;
+            score += 0;
         }
         None => {
-            score +=3;
+            score += 3;
         }
         Some(true) => {
-            score +=6;
+            score += 6;
         }
     }
 
     score
-
 }
