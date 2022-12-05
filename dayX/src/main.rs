@@ -19,7 +19,7 @@ impl InputReader for Container{
         todo!()
     }
 
-    fn star2(mut self) -> String {
+    fn star2( self) -> String {
         todo!()
     }
 }
