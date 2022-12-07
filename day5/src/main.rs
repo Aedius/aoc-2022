@@ -49,14 +49,13 @@ impl InputReader for Container {
             }
             return;
         }
-        if ! self.load_complete {
+        if !self.load_complete {
             self.print();
         }
 
         self.load_complete = true;
 
         if let Some(found) = self.regex_move.captures(line) {
-
             let nb = found[1].parse::<usize>().unwrap();
             let from = found[2].parse::<usize>().unwrap();
             let to = found[3].parse::<usize>().unwrap();
@@ -76,17 +75,19 @@ impl InputReader for Container {
 }
 
 impl Container {
-    fn add_crane_row(
-        index: usize,
-        char_vec: Vec<char>,
-        crane: &mut HashMap<usize, Vec<char>>,
-    ) {
+    fn add_crane_row(index: usize, char_vec: Vec<char>, crane: &mut HashMap<usize, Vec<char>>) {
         let column = crane.entry(index).or_insert(Vec::new());
         column.push(*char_vec.first().unwrap());
     }
 
-    fn move_crate(crane: &mut HashMap<usize, Vec<char>>, nb: usize, from: usize, to: usize, one_by_one: bool) {
-        let mut to_move : Vec<char>;
+    fn move_crate(
+        crane: &mut HashMap<usize, Vec<char>>,
+        nb: usize,
+        from: usize,
+        to: usize,
+        one_by_one: bool,
+    ) {
+        let mut to_move: Vec<char>;
         {
             let from_crane = crane.entry(from).or_insert(Vec::new());
 
@@ -120,7 +121,7 @@ impl Container {
         list.into_iter().filter(|c| *c != &'0').collect()
     }
 
-    fn print(&self){
+    fn print(&self) {
         let cap = self.crane_9000.len();
 
         let crane_9000 = self.complete_crane(self.crane_9000.clone());

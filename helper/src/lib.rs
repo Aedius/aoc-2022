@@ -2,7 +2,10 @@ use easy_reader::EasyReader;
 use std::{fs::File, io::Error};
 
 pub trait InputReader {
+    fn on_start(&mut self) {}
+
     fn read(&mut self, path: &str) -> Result<(), Error> {
+        self.on_start();
         let file = File::open(path)?;
 
         let mut reader = EasyReader::new(file)?;

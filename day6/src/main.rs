@@ -2,7 +2,7 @@ use helper::{aoc1, aoc2, InputReader};
 
 fn main() {
     aoc1!(Container, "day6", 7);
-    aoc2!(Container, "day6", 7 , 1647, 19);
+    aoc2!(Container, "day6", 7, 1647, 19);
 }
 
 #[derive(Default)]
@@ -12,18 +12,17 @@ struct Container {
 }
 
 impl InputReader for Container {
-    fn add_line(&mut self, line: &str){
+    fn add_line(&mut self, line: &str) {
         if line.len() == 0 {
-            return
+            return;
         }
-        let chars:Vec<char> = line.chars().into_iter().collect();
+        let chars: Vec<char> = line.chars().into_iter().collect();
 
-        self.res1 = Self::calculate(chars.clone(),4);
-        self.res2 = Self::calculate(chars.clone(),14);
+        self.res1 = Self::calculate(chars.clone(), 4);
+        self.res2 = Self::calculate(chars.clone(), 14);
     }
 
     fn star1(self) -> String {
-
         self.res1.to_string()
     }
 
@@ -33,7 +32,7 @@ impl InputReader for Container {
 }
 
 impl Container {
-    fn calculate(chars: Vec<char>,  n: usize )->usize {
+    fn calculate(chars: Vec<char>, n: usize) -> usize {
         let mut res = 0;
         for list in chars.windows(n) {
             let mut l: Vec<char> = list.into_iter().map(|c| *c).collect();
@@ -48,4 +47,3 @@ impl Container {
         res
     }
 }
-
