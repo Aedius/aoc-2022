@@ -1,20 +1,19 @@
-use helper::{aoc1, aoc2, InputReader};
+use helper::{aoc1_full, aoc2_alone, InputReader};
 use regex::Regex;
 use Move::*;
 
 fn main() {
-    // aoc1!(Container, "day9", 13);
-    aoc2!(Container, "day9/part2", 13, 36, 0);
+    aoc1_full!(Container, "day9", 13, 6494);
+    aoc2_alone!(Container, "day9/part2", 36);
 }
 
-// const SIZE: usize = 1001;
-// const START: usize = 500;
-// const PRINT :bool= false;
-
-const SIZE: usize = 51;
-const START: usize = 25;
-
+const SIZE: usize = 1001;
+const START: usize = 500;
 const PRINT: bool = false;
+//
+// const SIZE: usize = 51;
+// const START: usize = 25;
+// const PRINT: bool = true;
 
 struct Container {
     regex: Regex,
@@ -61,19 +60,20 @@ impl Container {
         }
         for i in 0..SIZE {
             for j in 0..SIZE {
+                let mut printed = false;
                 for p in 0..self.rope.len() {
                     if self.rope[p] == (i, j) {
                         print!("{p} ");
+                        printed = true;
+                        break;
                     }
                 }
-                if self.head == (i, j) {
-                    print!("H ");
-                } else if self.tail == (i, j) {
-                    print!("T ");
-                } else if self.field1[i][j] {
-                    print!("x ");
-                } else {
-                    print!(". ");
+                if !printed {
+                    if self.field1[i][j] {
+                        print!("x ");
+                    } else {
+                        print!(". ");
+                    }
                 }
             }
             print!("\n");
@@ -84,56 +84,73 @@ impl Container {
     fn move_head(&mut self, m: Move, step: usize) {
         for _ in 0..step {
             self.move_one(m);
+
+            self.print();
         }
     }
 
     fn move_one(&mut self, m: Move) {
         match m {
             Up => {
-                self.head.0 -= 1;
+                self.rope[0].0 -= 1;
             }
             Down => {
-                self.head.0 += 1;
+                self.rope[0].0 += 1;
             }
             Left => {
-                self.head.1 -= 1;
+                self.rope[0].1 -= 1;
             }
             Right => {
-                self.head.1 += 1;
+                self.rope[0].1 += 1;
             }
         }
 
-        let previous = self.head;
-        let mut to_move = self.tail[0];
+        for i in 1..self.rope.len() {
+            self.rope[i] = Self::calculate_next(self.rope[i - 1], self.rope[i]);
+        }
 
-        Self::calculate_next(previous, to_move);
-
-        self.field1[self.rope[1].0][self.rope[1].0] = true;
-        self.field9[self.rope[9].0][self.rope[9].0] = true;
+        self.field1[self.rope[1].0][self.rope[1].1] = true;
+        self.field9[self.rope[9].0][self.rope[9].1] = true;
     }
 
-    fn calculate_next(previous: (usize, usize), mut to_move: (usize, usize)) {
+    fn calculate_next(previous: (usize, usize), mut to_move: (usize, usize)) -> (usize, usize) {
         if previous.0.abs_diff(to_move.0) <= 1 && previous.1.abs_diff(to_move.1) <= 1 {
-            return;
+            return to_move;
         }
+
+        if previous.0.abs_diff(to_move.0) > 2 || previous.1.abs_diff(to_move.1) > 2 {
+            println!("previous {previous:?}");
+            println!("to_move {to_move:?}");
+            panic!("cannot be >2 !");
+        }
+
         if previous.0.abs_diff(to_move.0) == 2 {
             to_move.0 = (to_move.0 + previous.0) / 2;
-            if previous.1.abs_diff(to_move.1) == 1 {
+
+            if previous.1.abs_diff(to_move.1) == 2 {
+                to_move.1 = (to_move.1 + previous.1) / 2;
+            } else if previous.1.abs_diff(to_move.1) == 1 {
                 to_move.1 = previous.1;
             }
         }
         if previous.1.abs_diff(to_move.1) == 2 {
             to_move.1 = (to_move.1 + previous.1) / 2;
-            if previous.0.abs_diff(to_move.0) == 1 {
+
+            if previous.0.abs_diff(to_move.0) == 2 {
+                to_move.0 = (to_move.0 + previous.0) / 2;
+            } else if previous.0.abs_diff(to_move.0) == 1 {
                 to_move.0 = previous.0;
             }
         }
+
+        to_move
     }
 }
 
 impl InputReader for Container {
     fn on_start(&mut self) {
-        self.field1[self.tail.0][self.tail.1] = true;
+        self.field1[self.rope[1].0][self.rope[1].1] = true;
+        self.field9[self.rope[9].0][self.rope[9].1] = true;
     }
 
     fn add_line(&mut self, line: &str) {
@@ -142,7 +159,6 @@ impl InputReader for Container {
             let nb: usize = cap[2].parse().unwrap();
             self.move_head(m, nb);
         }
-        self.print();
     }
 
     fn star1(self) -> String {
