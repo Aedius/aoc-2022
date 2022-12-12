@@ -3,6 +3,7 @@ use std::{fs::File, io::Error};
 
 pub trait InputReader {
     fn on_start(&mut self) {}
+    fn after_all_line(&mut self) {}
 
     fn read(&mut self, path: &str) -> Result<(), Error> {
         self.on_start();
@@ -13,6 +14,7 @@ pub trait InputReader {
         while let Some(line) = reader.next_line()? {
             self.add_line(line.as_str());
         }
+        self.after_all_line();
 
         Ok(())
     }
